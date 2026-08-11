@@ -1,0 +1,167 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f7fb;
+    color: #333333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #1a5276;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+header p {
+    margin-top: 10px;
+    font-size: 1.1em;
+}
+
+nav {
+    background-color: #2874a6;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+
+nav a:hover {
+    background-color: #e67e22;
+    color: white;
+}
+
+main {
+    background-color: white;
+    padding: 20px;
+    border-radius: 0 0 10px 10px;
+    margin: 20px auto;
+    max-width: 1000px;
+}
+
+
+section {
+    background-color: #eaf2f8;
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    border-left: 5px solid #2874a6;
+}
+
+
+h1,
+h2,
+h3 {
+    color: #1a5276;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 2em;
+    margin-bottom: 15px;
+}
+
+h3 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 15px;
+}
+
+.project-item {
+    background-color: #f8f9f9;
+    padding: 15px;
+    margin: 15px 0;
+    border: 1px solid #d4e6f1;
+    border-radius: 5px;
+}
+
+.project-item h3 {
+    color: #1a5276;
+}
+
+
+aside {
+    background-color: #d6eaf8;
+    padding: 25px;
+    border: 2px solid #2874a6;
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 1000px;
+}
+ 
+footer {
+    background-color: #1a5276;
+    color: white;
+    text-align: center;
+    padding: 25px;
+    margin-top: 20px;
+    font-size: 0.9em;
+}
+
+footer p {
+    margin: 8px;
+}
+
+
+ul {
+    list-style-type: square;
+    padding-left: 25px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+
+.highlight {
+    color: #e67e22;
+    font-weight: bold;
+}
+
+
+.project-item:hover {
+    border-color: #e67e22;
+}
+
+
+.button {
+    display: inline-block;
+    background-color: #e67e22;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+
+.button:hover {
+    background-color: #d35400;
+}
+
+
+a:hover {
+    text-decoration: underline;
+}
