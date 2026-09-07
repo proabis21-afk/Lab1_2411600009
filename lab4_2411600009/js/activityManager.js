@@ -1,6 +1,6 @@
 /* ============================================================
    activityManager.js
-   Sunny Beach Fitness Tracker - Data Layer (Lab 4 enhancement)
+  Light Way Fitness Tracker - Data Layer (Lab 4 enhancement)
    ============================================================ */
 
 const CONFIG = {
