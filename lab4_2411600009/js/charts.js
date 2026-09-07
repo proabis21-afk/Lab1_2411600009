@@ -1,7 +1,3 @@
-/* ============================================================
-   charts.js
-   Chart.js configuration and rendering (Sunny Beach theme)
-   ============================================================ */
 
 const CHART_COLORS = {
   primary: "#264653",    // charcoal-blue
