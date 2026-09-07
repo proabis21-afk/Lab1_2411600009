@@ -1,215 +1,97 @@
-:root { 
-    --bs-primary: #E36A6A; 
-    --bs-primary-rgb: 227, 106, 106; 
-    --bs-secondary: #FFB2B2; 
-    --bs-secondary-rgb: 255, 178, 178; 
-    --bs-success: #FFB2B2; 
-    --bs-info: #FFF2D0; 
-    --bs-warning: #FFF2D0; 
-    --bs-danger: #E36A6A; 
- 
-    --theme-primary: #E36A6A; 
-    --theme-secondary: #FFB2B2; 
-    --theme-accent: #FFF2D0; 
-    --theme-background: #FFFBF1; 
-    --theme-light-accent: #FFF2D0; 
-    --theme-text: #5A3A3A; 
-} 
- 
-body { 
-    background-color: var(--theme-background); 
-    color: var(--theme-text); 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-} 
- 
-.login-page { 
-    background: linear-gradient( 
-        135deg, 
-        var(--theme-primary), 
-        var(--theme-secondary) 
-    ); 
-    min-height: 100vh; 
-} 
- 
-.login-card { 
-    border: none; 
-    border-radius: 15px; 
-    overflow: hidden; 
-    box-shadow: 0 10px 40px rgba(227, 106, 106, 0.2); 
-} 
- 
-.login-card .card-header { 
-    background: linear-gradient( 
-        135deg, 
-        var(--theme-primary), 
-        var(--theme-secondary) 
-    ); 
-    border-bottom: none; 
-} 
- 
-.sidebar { 
-    background-color: #FFFFFF; 
-    border-right: 1px solid rgba(227, 106, 106, 0.10); 
-    box-shadow: 2px 0 8px rgba(227, 106, 106, 0.06); 
-} 
- 
-.sidebar .nav-link { 
-    color: var(--theme-text); 
-    border-radius: 8px; 
-    padding: 10px 15px; 
-    margin-bottom: 5px; 
-    transition: all 0.3s ease; 
-} 
- 
-.sidebar .nav-link:hover { 
-    background-color: rgba(255, 178, 178, 0.15); 
-    color: var(--theme-primary); 
-} 
- 
-.sidebar .nav-link.active { 
-    background-color: var(--theme-primary); 
-    color: #FFFFFF !important; 
-} 
- 
-.sidebar .nav-link.text-danger:hover { 
-    background-color: rgba(227, 106, 106, 0.12); 
-    color: var(--bs-danger) !important; 
-} 
- 
-.stat-card { 
-    border: none; 
-    border-radius: 12px; 
-    box-shadow: 0 2px 10px rgba(227, 106, 106, 0.08); 
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
-} 
- 
-.stat-card:hover { 
-    transform: translateY(-5px); 
-    box-shadow: 0 8px 20px rgba(227, 106, 106, 0.12); 
-} 
- 
-.stat-card .card-body { 
-    padding: 1.5rem; 
-} 
- 
-.stat-card .card-title { 
-    font-size: 0.9rem; 
-    text-transform: uppercase; 
-    letter-spacing: 0.5px; 
-    margin-bottom: 0.5rem; 
-} 
- 
-.stat-card .card-text { 
-    font-size: 1.8rem; 
-    margin-bottom: 0; 
-} 
- 
-.shadow-hover { 
-    transition: box-shadow 0.3s ease; 
-} 
- 
-.shadow-hover:hover { 
-    box-shadow: 0 8px 25px rgba(227, 106, 106, 0.15) !important; 
-} 
- 
-.border-accent { 
-    border-left: 4px solid var(--theme-accent); 
-} 
- 
-.border-primary-custom { 
-    border-left: 4px solid var(--theme-primary); 
-} 
- 
-.border-success-custom { 
-    border-left: 4px solid var(--bs-success); 
-} 
- 
-.bg-gradient-primary { 
-    background: linear-gradient( 
-        135deg, 
-        var(--theme-primary), 
-        var(--theme-secondary) 
-    ); 
-} 
- 
-.text-accent { 
-    color: var(--theme-accent); 
-} 
- 
-.text-primary-custom { 
-    color: var(--theme-primary); 
-} 
- 
-.btn-primary { 
-    background-color: var(--theme-primary); 
-    border-color: var(--theme-primary); 
-} 
- 
-.btn-primary:hover { 
-    background-color: #C94F4F; 
-    border-color: #C94F4F; 
-} 
- 
-.btn-aqua { 
-    background-color: var(--theme-secondary); 
-    border-color: var(--theme-secondary); 
-    color: #FFFFFF; 
-    font-weight: 600; 
-} 
- 
-.btn-aqua:hover { 
-    background-color: #E36A6A; 
-    border-color: #E36A6A; 
-} 
- 
-.btn-soft { 
-    background-color: var(--theme-background); 
-    border-color: var(--theme-accent); 
-    color: var(--theme-text); 
-} 
- 
-.btn-soft:hover { 
-    background-color: var(--theme-accent); 
-} 
- 
-@media (max-width: 768px) { 
-    .sidebar { 
-        min-height: auto !important; 
-        height: auto !important; 
-    } 
- 
-    .stat-card .card-text { 
-        font-size: 1.4rem; 
-    } 
-} 
- 
-::-webkit-scrollbar { 
-    width: 8px; 
-} 
- 
-::-webkit-scrollbar-track { 
-    background: var(--theme-background); 
-    border-radius: 10px; 
-} 
- 
-::-webkit-scrollbar-thumb { 
-    background: var(--theme-secondary); 
-    border-radius: 10px; 
-} 
- 
-::-webkit-scrollbar-thumb:hover { 
-    background: var(--theme-primary); 
-} 
- 
-.login-logo { 
-  height: 300px; 
-  width: auto; 
-  object-fit: contain; 
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2)); 
-} 
- 
-.navbar-logo { 
-  height: 32px; 
-  width: auto; 
-  object-fit: contain; 
-} 
+:root {
+  --primary: #E36A6A;
+  --primary-dark: #c95353;
+  --secondary: #FFB2B2;
+  --cream: #FFFBF1;
+  --text: #4f3b3b;
+  --muted: #777;
+  --blue: #5EA7E8;
+  --green: #2A9D8F;
+  --yellow: #F2B233;
+  --danger: #E64B59;
+}
+
+* { box-sizing: border-box; }
+body { margin:0; background:var(--cream); color:var(--text); font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif; }
+
+/* Login */
+.login-page { min-height:100vh; background:linear-gradient(135deg,#f7a0a0,#ffe1d9); }
+.login-card { width:100%; max-width:420px; border:0; border-radius:18px; overflow:hidden; box-shadow:0 16px 45px rgba(90,58,58,.18); }
+.login-card .card-header { background:linear-gradient(135deg,var(--primary),var(--secondary)); border:0; }
+.brand-icon { width:72px; height:72px; border-radius:50%; background:#fff; color:var(--primary); display:grid; place-items:center; font-size:34px; box-shadow:0 5px 15px rgba(0,0,0,.12); }
+.input-group-text { background:#fff7f4; border-color:#ead9d9; color:var(--primary); }
+.form-control:focus,.form-select:focus { border-color:var(--secondary); box-shadow:0 0 0 .2rem rgba(227,106,106,.12); }
+
+/* Header */
+.topbar { background:var(--primary); min-height:58px; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+.brand-mini { display:inline-grid; place-items:center; width:30px; height:30px; margin-right:7px; border-radius:50%; background:rgba(255,255,255,.2); }
+
+/* Sidebar */
+.sidebar { background:#fff; border-right:1px solid #eee; box-shadow:2px 0 8px rgba(0,0,0,.04); }
+.sidebar-title { font-size:.68rem; font-weight:700; letter-spacing:1px; color:#aaa; margin:6px 12px 12px; }
+.sidebar .nav-link { color:var(--text); border-radius:9px; padding:11px 13px; margin-bottom:5px; transition:.2s; }
+.sidebar .nav-link i { width:24px; display:inline-block; }
+.sidebar .nav-link:hover { background:#fff0f0; color:var(--primary); }
+.sidebar .nav-link.active { background:var(--primary); color:#fff!important; }
+.sidebar .logout-link:hover { background:#ffe7e7; color:var(--danger)!important; }
+.sidebar-tip { background:#fff5df; border:1px solid #f5dfae; border-radius:12px; padding:13px; display:flex; flex-direction:column; gap:4px; font-size:.78rem; }
+.sidebar-tip i { color:var(--yellow); font-size:1.2rem; }
+.sidebar-tip span { color:#777; line-height:1.35; }
+
+/* Main */
+.main-content { min-height:calc(100vh - 58px); }
+.page-heading { display:flex; justify-content:space-between; align-items:end; border-bottom:1px solid #e8dfd6; }
+.page-heading h2 { margin:0; font-size:1.65rem; font-weight:700; color:#4c3838; }
+.lab-badge { background:#fff; border:1px solid #eadfdf; border-radius:20px; padding:7px 12px; font-size:.72rem; color:#777; }
+
+/* Stat cards */
+.stat-card,.chart-card,.filter-bar,.activity-card { border:0; border-radius:13px; box-shadow:0 3px 14px rgba(90,58,58,.08); background:#fff; }
+.stat-card { transition:transform .2s, box-shadow .2s; }
+.stat-card:hover { transform:translateY(-2px); box-shadow:0 7px 20px rgba(90,58,58,.12); }
+.stat-card .card-body { padding:1.1rem; position:relative; min-height:140px; }
+.stat-icon { width:48px; height:48px; border-radius:50%; display:grid; place-items:center; font-size:22px; margin-bottom:12px; }
+.stat-icon.steps { background:#ffe4e9; color:#e85b78; }
+.stat-icon.calories { background:#dff4e9; color:var(--green); }
+.stat-icon.workouts { background:#e1f0ff; color:var(--blue); }
+.stat-icon.heart { background:#fff0c9; color:var(--yellow); }
+.stat-label { color:#6f6f6f; font-size:.72rem; letter-spacing:.5px; font-weight:700; }
+.stat-value { font-size:1.55rem; font-weight:800; margin-top:4px; }
+.steps-text { color:#e85b78; }.calories-text{color:var(--green)}.workouts-text{color:var(--blue)}.heart-text{color:var(--yellow)}
+
+/* Charts */
+.chart-card .card-body { padding:1rem 1.1rem; }
+.chart-card h6 { font-weight:700; color:#4c3838; margin-bottom:10px; }
+.chart-card h6 i { color:var(--primary); margin-right:5px; }
+.chart-container { height:220px; position:relative; }
+
+/* Filters */
+.filter-bar { background:#fff; }
+.btn-status-filter.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+.btn-lightway { background:var(--primary); border-color:var(--primary); color:#fff; }
+.btn-lightway:hover { background:var(--primary-dark); border-color:var(--primary-dark); color:#fff; }
+#activityTableBody mark { background:#fff0a8; border-radius:3px; padding:0 2px; }
+
+/* Table */
+.activity-card .card-header { background:#fff; border-bottom:1px solid #eee; padding:13px 16px; }
+.activity-card .card-header h5 { font-size:1rem; font-weight:700; }
+.activity-card .card-header i { color:var(--primary); margin-right:6px; }
+.table { font-size:.78rem; }
+.table thead th { color:#333; font-weight:700; white-space:nowrap; }
+.table tbody td { vertical-align:middle; }
+.badge { padding:.45em .7em; }
+.toast-icon { color:var(--primary); }
+
+/* Loading */
+#loadingOverlay { position:fixed; inset:0; background:rgba(255,251,241,.92); z-index:2000; display:flex; align-items:center; justify-content:center; }
+#loadingOverlay .spinner-border { color:var(--primary); }
+
+@media (max-width:768px) {
+  .sidebar { min-height:auto!important; height:auto!important; }
+  .page-heading { align-items:start; flex-direction:column; gap:10px; }
+  .navbar-text { display:none; }
+  .chart-container { height:220px; }
+}
+
+/* GYMRAT logo supplied by Paler */
+.login-logo { width: 150px; height: 150px; object-fit: contain; display: block; }
+.dashboard-logo { width: 48px; height: 48px; object-fit: contain; vertical-align: middle; margin-right: 8px; background: transparent; }
