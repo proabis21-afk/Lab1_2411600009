@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "name": "Morning Run",
+        "type": "Running",
+        "date": "2026-09-01 06:30",
+        "duration": 45,
+        "caloriesBurned": 420,
+        "avgHeartRate": 145,
+        "status": "completed"
+    },
+    {
+        "id": 2,
+        "name": "Push Workout",
+        "type": "Strength",
+        "date": "2026-09-02 17:00",
+        "duration": 35,
+        "caloriesBurned": 280,
+        "avgHeartRate": 125,
+        "status": "completed"
+    },
+    {
+        "id": 3,
+        "name": "Cycling",
+        "type": "Cycling",
+        "date": "2026-09-03 07:15",
+        "duration": 60,
+        "caloriesBurned": 550,
+        "avgHeartRate": 138,
+        "status": "completed"
+    },
+    {
+        "id": 4,
+        "name": "Evening Walk",
+        "type": "Walking",
+        "date": "2026-09-04 18:30",
+        "duration": 30,
+        "caloriesBurned": 180,
+        "avgHeartRate": 105,
+        "status": "completed"
+    },
+    {
+        "id": 5,
+        "name": "Leg Workout",
+        "type": "Strength",
+        "date": "2026-09-05 16:00",
+        "duration": 50,
+        "caloriesBurned": 390,
+        "avgHeartRate": 132,
+        "status": "in-progress"
+    },
+    {
+        "id": 6,
+        "name": "Treadmill Run",
+        "type": "Running",
+        "date": "2026-09-06 06:45",
+        "duration": 40,
+        "caloriesBurned": 370,
+        "avgHeartRate": 142,
+        "status": "completed"
+    },
+    {
+        "id": 7,
+        "name": "Swimming",
+        "type": "Swimming",
+        "date": "2026-09-07 08:00",
+        "duration": 45,
+        "caloriesBurned": 460,
+        "avgHeartRate": 135,
+        "status": "missed"
+    }
+]
