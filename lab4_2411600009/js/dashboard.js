@@ -1,274 +1,683 @@
-document.addEventListener('DOMContentLoaded', async function () {
-  const isLoggedIn = localStorage.getItem('isLoggedIn');
-  if (isLoggedIn !== 'true') {
-    window.location.href = 'index.html';
-    return;
-  }
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
 
-  const username = localStorage.getItem('user') || 'User';
-  const userNameSpan = document.getElementById('userName');
-  if (userNameSpan) userNameSpan.textContent = username;
+        if (
+            localStorage.getItem(
+                "isLoggedIn"
+            ) !== "true"
+        ) {
 
-  updateGreeting(username);
-  setupLogout();
+            window.location.href =
+                "index.html";
 
-  showLoadingState(true);
-  await initializeData();
-  showLoadingState(false);
+            return;
+        }
 
-  populateTypeFilter();
-  refreshDashboard();
-  attachEventListeners();
-  startRealTimeSimulation();
-});
+        const username =
+            localStorage.getItem("user") ||
+            "User";
+
+        document.getElementById(
+            "userName"
+        ).textContent = username;
+
+        updateGreeting(username);
+
+        setupLogout();
+
+        showLoadingState(true);
+
+        try {
+
+            await initializeData();
+
+            populateTypeFilter();
+
+            refreshDashboard();
+
+            attachEventListeners();
+
+            startRealTimeSimulation();
+
+        } catch (error) {
+
+            console.error(error);
+
+            alert(
+                "Unable to connect to PHP API.\n\n" +
+                "Make sure Apache is running and open the project using:\n" +
+                "http://localhost/lab4_2411600009/"
+            );
+
+        } finally {
+
+            showLoadingState(false);
+
+        }
+
+    }
+);
 
 
 function updateGreeting(username) {
-  const greetingElement = document.getElementById('greeting');
-  if (!greetingElement) return;
 
-  const hour = new Date().getHours();
-  let timeOfDay = '';
+    const hour =
+        new Date().getHours();
 
-  if (hour >= 5 && hour < 12) {
-    timeOfDay = 'Good Morning';
-  } else if (hour >= 12 && hour < 17) {
-    timeOfDay = 'Good Afternoon';
-  } else if (hour >= 17 && hour < 21) {
-    timeOfDay = 'Good Evening';
-  } else {
-    timeOfDay = 'Good Night';
-  }
+    let greeting;
 
-  greetingElement.textContent = `${timeOfDay}, ${username}!`;
+    if (hour >= 5 && hour < 12) {
+
+        greeting = "Good Morning";
+
+    } else if (
+        hour >= 12 &&
+        hour < 17
+    ) {
+
+        greeting = "Good Afternoon";
+
+    } else if (
+        hour >= 17 &&
+        hour < 21
+    ) {
+
+        greeting = "Good Evening";
+
+    } else {
+
+        greeting = "Good Night";
+
+    }
+
+    document.getElementById(
+        "greeting"
+    ).textContent =
+        `${greeting}, ${username}!`;
 }
 
 
 function updateStatistics() {
-  const stats = getActivityStatistics();
 
-  const stat1Value = document.getElementById('stat1-value'); // Daily Steps
-  const stat2Value = document.getElementById('stat2-value'); // Calories Burned
-  const stat3Value = document.getElementById('stat3-value'); // Workouts
-  const stat4Value = document.getElementById('stat4-value'); // Avg Heart Rate
+    const stats =
+        getActivityStatistics();
 
-  if (stat1Value) stat1Value.textContent = stats.latestSteps.toLocaleString();
-  if (stat2Value) stat2Value.textContent = `${stats.totalCalories.toLocaleString()} kcal`;
-  if (stat3Value) stat3Value.textContent = stats.completedCount;
-  if (stat4Value) stat4Value.textContent = `${stats.avgHeartRate || 0} bpm`;
+    document.getElementById(
+        "stat1-value"
+    ).textContent =
+        stats.latestSteps.toLocaleString();
+
+    document.getElementById(
+        "stat2-value"
+    ).textContent =
+        `${stats.totalCalories.toLocaleString()} kcal`;
+
+    document.getElementById(
+        "stat3-value"
+    ).textContent =
+        stats.completedCount;
+
+    document.getElementById(
+        "stat4-value"
+    ).textContent =
+        `${stats.avgHeartRate} bpm`;
 }
 
 
-function renderActivityTable(activities) {
-  const tableBody = document.getElementById('activityTableBody');
-  if (!tableBody) return;
-  tableBody.innerHTML = '';
+function renderActivityTable(
+    activities
+) {
 
-  if (activities.length === 0) {
-    const emptyRow = document.createElement('tr');
-    const cell = document.createElement('td');
-    cell.colSpan = 7;
-    cell.className = 'text-center text-muted py-4';
-    cell.textContent = 'No activities match the current filters.';
-    emptyRow.appendChild(cell);
-    tableBody.appendChild(emptyRow);
-    return;
-  }
+    const tableBody =
+        document.getElementById(
+            "activityTableBody"
+        );
 
-  const query = AppState.searchQuery.trim().toLowerCase();
+    tableBody.innerHTML = "";
 
-  activities.forEach((activity) => {
-    const row = document.createElement('tr');
+    if (activities.length === 0) {
 
-    row.appendChild(makeCell(activity.date));
-    row.appendChild(makeCell(highlightMatch(activity.name, query), true));
-    row.appendChild(makeCell(activity.type));
-    row.appendChild(makeCell(activity.duration ? `${activity.duration} min` : '—'));
-    row.appendChild(makeCell(activity.caloriesBurned ? `${activity.caloriesBurned} kcal` : '—'));
-    row.appendChild(makeCell(activity.avgHeartRate ? `${activity.avgHeartRate} bpm` : '—'));
+        tableBody.innerHTML = `
+            <tr>
+                <td
+                    colspan="8"
+                    class="text-center text-muted py-4"
+                >
+                    No activities found.
+                </td>
+            </tr>
+        `;
 
-    const statusCell = document.createElement('td');
-    let badgeClass = 'bg-secondary';
-    if (activity.status === 'completed') badgeClass = 'bg-success';
-    else if (activity.status === 'in-progress') badgeClass = 'bg-warning text-dark';
-    else if (activity.status === 'missed') badgeClass = 'bg-danger';
-    else if (activity.status === 'info') badgeClass = 'bg-info text-dark';
-    const badge = document.createElement('span');
-    badge.className = `badge ${badgeClass}`;
-    badge.textContent = activity.status;
-    statusCell.appendChild(badge);
-    row.appendChild(statusCell);
+        return;
+    }
 
-    tableBody.appendChild(row);
-  });
+    activities.forEach(
+        activity => {
+
+            const row =
+                document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${activity.date}</td>
+
+                <td>
+                    ${escapeHTML(activity.name)}
+                </td>
+
+                <td>
+                    ${escapeHTML(activity.type)}
+                </td>
+
+                <td>
+                    ${activity.duration} min
+                </td>
+
+                <td>
+                    ${activity.caloriesBurned} kcal
+                </td>
+
+                <td>
+                    ${activity.avgHeartRate} bpm
+                </td>
+
+                <td>
+                    <span class="badge ${getStatusClass(activity.status)}">
+                        ${activity.status}
+                    </span>
+                </td>
+
+                <td></td>
+            `;
+
+            const actionCell =
+                row.lastElementChild;
+
+            if (
+                activity.status ===
+                "in-progress"
+            ) {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+                button.className =
+                    "btn btn-sm btn-success";
+
+                button.textContent =
+                    "Complete";
+
+                button.addEventListener(
+                    "click",
+                    async function () {
+
+                        try {
+
+                            await updateActivity(
+                                activity.id,
+                                {
+                                    status:
+                                        "completed"
+                                }
+                            );
+
+                            refreshDashboard();
+
+                            showToast(
+                                "Workout completed!"
+                            );
+
+                        } catch (error) {
+
+                            console.error(error);
+
+                            alert(
+                                "Unable to update activity."
+                            );
+
+                        }
+
+                    }
+                );
+
+                actionCell.appendChild(
+                    button
+                );
+
+            } else {
+
+                actionCell.textContent =
+                    "—";
+
+            }
+
+            tableBody.appendChild(row);
+
+        }
+    );
 }
 
-function makeCell(content, isHTML = false) {
-  const td = document.createElement('td');
-  if (isHTML) td.innerHTML = content;
-  else td.textContent = content;
-  return td;
-}
 
-function highlightMatch(text, query) {
-  if (!query) return escapeHTML(text);
-  const escaped = escapeHTML(text);
-  const idx = escaped.toLowerCase().indexOf(query.toLowerCase());
-  if (idx === -1) return escaped;
-  return escaped.slice(0, idx) + `<mark>${escaped.slice(idx, idx + query.length)}</mark>` + escaped.slice(idx + query.length);
-}
+function getStatusClass(status) {
 
-function escapeHTML(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
+    if (status === "completed") {
+        return "bg-success";
+    }
 
+    if (status === "in-progress") {
+        return "bg-warning text-dark";
+    }
 
-function renderMissedAlerts() {
-  const container = document.getElementById('alertContainer');
-  if (!container) return;
-  container.innerHTML = '';
-  const missed = getMissedActivities();
+    if (status === "missed") {
+        return "bg-danger";
+    }
 
-  if (missed.length === 0) {
-    container.classList.add('d-none');
-    return;
-  }
-  container.classList.remove('d-none');
-
-  const alert = document.createElement('div');
-  alert.className = 'alert alert-warning d-flex align-items-start gap-2 shadow-sm';
-  alert.setAttribute('role', 'alert');
-
-  const icon = document.createElement('i');
-  icon.className = 'bi bi-exclamation-triangle-fill fs-4';
-
-  const textWrap = document.createElement('div');
-  const title = document.createElement('strong');
-  title.textContent = `${missed.length} workout(s) need attention: `;
-  const list = document.createElement('span');
-  list.textContent = missed.map((a) => `${a.name} (${a.status})`).join(', ');
-
-  textWrap.appendChild(title);
-  textWrap.appendChild(list);
-  alert.appendChild(icon);
-  alert.appendChild(textWrap);
-  container.appendChild(alert);
+    return "bg-secondary";
 }
 
 
 function populateTypeFilter() {
-  const select = document.getElementById('typeFilter');
-  if (!select) return;
-  const types = [...new Set(getActivities().map((a) => a.type))];
-  types.forEach((type) => {
-    const opt = document.createElement('option');
-    opt.value = type;
-    opt.textContent = type;
-    select.appendChild(opt);
-  });
+
+    const select =
+        document.getElementById(
+            "typeFilter"
+        );
+
+    const types =
+        [
+            ...new Set(
+                getActivities()
+                    .map(
+                        activity =>
+                            activity.type
+                    )
+            )
+        ];
+
+    types.forEach(
+        type => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+            option.value = type;
+            option.textContent = type;
+
+            select.appendChild(option);
+
+        }
+    );
 }
+
 
 function refreshDashboard() {
-  const filtered = applyFilters();
-  renderActivityTable(filtered);
-  updateStatistics();
-  renderMissedAlerts();
-  refreshAllCharts();
+
+    const filtered =
+        applyFilters();
+
+    renderActivityTable(
+        filtered
+    );
+
+    updateStatistics();
+
+    renderMissedAlerts();
+
+    refreshAllCharts();
 }
+
 
 function attachEventListeners() {
-  document.getElementById('typeFilter').addEventListener('change', (e) => {
-    filterByType(e.target.value);
-    refreshDashboard();
-  });
 
-  document.querySelectorAll('[data-status-filter]').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      document.querySelectorAll('[data-status-filter]').forEach((b) => b.classList.remove('active'));
-      e.currentTarget.classList.add('active');
-      filterByStatus(e.currentTarget.dataset.statusFilter);
-      refreshDashboard();
-    });
-  });
+    document.getElementById(
+        "typeFilter"
+    ).addEventListener(
+        "change",
+        function (event) {
 
-  document.getElementById('calMin').addEventListener('input', debounce(applyCalorieFilter, 300));
-  document.getElementById('calMax').addEventListener('input', debounce(applyCalorieFilter, 300));
+            filterByType(
+                event.target.value
+            );
 
-  document.getElementById('searchInput').addEventListener('input', (e) => {
-    updateSearchResults(e.target.value);
-    renderActivityTable(applyFilters());
-  });
+            refreshDashboard();
 
-  document.getElementById('exportCsvBtn').addEventListener('click', () => {
-    const data = applyFilters();
-    const csv = exportToCSV(data);
-    downloadCSV(csv, `activity_log_${Date.now()}.csv`);
-    showToast(`Exported ${data.length} activity record(s) to CSV.`);
-  });
+        }
+    );
 
-  document.getElementById('clearFiltersBtn').addEventListener('click', () => {
-    AppState.filters = { type: 'all', status: 'all', minCal: null, maxCal: null };
-    AppState.searchQuery = '';
-    document.getElementById('typeFilter').value = 'all';
-    document.getElementById('calMin').value = '';
-    document.getElementById('calMax').value = '';
-    document.getElementById('searchInput').value = '';
-    document.querySelectorAll('[data-status-filter]').forEach((b) => b.classList.remove('active'));
-    document.querySelector('[data-status-filter="all"]').classList.add('active');
-    refreshDashboard();
-  });
+
+    document.querySelectorAll(
+        "[data-status-filter]"
+    ).forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    document.querySelectorAll(
+                        "[data-status-filter]"
+                    ).forEach(
+                        btn =>
+                            btn.classList.remove(
+                                "active"
+                            )
+                    );
+
+                    this.classList.add(
+                        "active"
+                    );
+
+                    filterByStatus(
+                        this.dataset.statusFilter
+                    );
+
+                    refreshDashboard();
+
+                }
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "searchInput"
+    ).addEventListener(
+        "input",
+        function (event) {
+
+            updateSearchResults(
+                event.target.value
+            );
+
+            refreshDashboard();
+
+        }
+    );
+
+
+    document.getElementById(
+        "calMin"
+    ).addEventListener(
+        "input",
+        applyCalorieFilter
+    );
+
+
+    document.getElementById(
+        "calMax"
+    ).addEventListener(
+        "input",
+        applyCalorieFilter
+    );
+
+
+    document.getElementById(
+        "exportCsvBtn"
+    ).addEventListener(
+        "click",
+        function () {
+
+            const data =
+                applyFilters();
+
+            const csv =
+                exportToCSV(data);
+
+            downloadCSV(
+                csv,
+                `activity_log_${Date.now()}.csv`
+            );
+
+            showToast(
+                `Exported ${data.length} record(s).`
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "clearFiltersBtn"
+    ).addEventListener(
+        "click",
+        function () {
+
+            AppState.filters = {
+                type: "all",
+                status: "all",
+                minCal: null,
+                maxCal: null
+            };
+
+            AppState.searchQuery = "";
+
+            document.getElementById(
+                "typeFilter"
+            ).value = "all";
+
+            document.getElementById(
+                "searchInput"
+            ).value = "";
+
+            document.getElementById(
+                "calMin"
+            ).value = "";
+
+            document.getElementById(
+                "calMax"
+            ).value = "";
+
+            document.querySelectorAll(
+                "[data-status-filter]"
+            ).forEach(
+                button =>
+                    button.classList.remove(
+                        "active"
+                    )
+            );
+
+            document.querySelector(
+                '[data-status-filter="all"]'
+            ).classList.add(
+                "active"
+            );
+
+            refreshDashboard();
+
+        }
+    );
 }
+
 
 function applyCalorieFilter() {
-  const min = parseFloat(document.getElementById('calMin').value);
-  const max = parseFloat(document.getElementById('calMax').value);
-  filterByCalorieRange(isNaN(min) ? null : min, isNaN(max) ? null : max);
-  refreshDashboard();
+
+    const min =
+        parseFloat(
+            document.getElementById(
+                "calMin"
+            ).value
+        );
+
+    const max =
+        parseFloat(
+            document.getElementById(
+                "calMax"
+            ).value
+        );
+
+    filterByCalorieRange(
+        Number.isNaN(min)
+            ? null
+            : min,
+
+        Number.isNaN(max)
+            ? null
+            : max
+    );
+
+    refreshDashboard();
 }
 
-function debounce(fn, delay) {
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), delay);
-  };
+
+function renderMissedAlerts() {
+
+    const container =
+        document.getElementById(
+            "alertContainer"
+        );
+
+    const missed =
+        getMissedActivities();
+
+    if (missed.length === 0) {
+
+        container.classList.add(
+            "d-none"
+        );
+
+        return;
+    }
+
+    container.classList.remove(
+        "d-none"
+    );
+
+    container.innerHTML = `
+        <div class="alert alert-warning">
+            <strong>
+                ⚠ Low Activity Alert:
+            </strong>
+            ${missed.length}
+            workout(s) need attention.
+        </div>
+    `;
 }
 
 
 function startRealTimeSimulation() {
-  setInterval(() => {
-    const newActivity = simulateNewActivity();
-    refreshDashboard();
-    showToast(`New activity synced: ${newActivity.name} (${newActivity.status})`);
-  }, CONFIG.REFRESH_INTERVAL_MS);
+
+    setInterval(
+        async function () {
+
+            try {
+
+                const newActivity =
+                    await simulateNewActivity();
+
+                refreshDashboard();
+
+                showToast(
+                    `New activity synced: ${newActivity.name}`
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Real-time update failed:",
+                    error
+                );
+
+            }
+
+        },
+        CONFIG.REFRESH_INTERVAL_MS
+    );
 }
+
 
 function showToast(message) {
-  const toastEl = document.getElementById('liveToast');
-  document.getElementById('toastBody').textContent = message;
-  const toast = new bootstrap.Toast(toastEl, { delay: 3500 });
-  toast.show();
+
+    const toastElement =
+        document.getElementById(
+            "liveToast"
+        );
+
+    document.getElementById(
+        "toastBody"
+    ).textContent = message;
+
+    const toast =
+        new bootstrap.Toast(
+            toastElement
+        );
+
+    toast.show();
 }
 
-function showLoadingState(isLoading) {
-  const overlay = document.getElementById('loadingOverlay');
-  if (overlay) overlay.classList.toggle('d-none', !isLoading);
+
+function showLoadingState(
+    loading
+) {
+
+    const overlay =
+        document.getElementById(
+            "loadingOverlay"
+        );
+
+    if (!overlay) return;
+
+    if (loading) {
+
+        overlay.style.display =
+            "flex";
+
+    } else {
+
+        overlay.style.display =
+            "none";
+
+    }
 }
 
 
 function setupLogout() {
-  const logoutBtn = document.getElementById('logoutBtn');
-  const logoutLink = document.getElementById('logoutLink');
 
-  function performLogout(e) {
-    if (e) e.preventDefault();
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('user');
-    window.location.href = 'index.html';
-  }
+    function logout(event) {
 
-  if (logoutBtn) logoutBtn.addEventListener('click', performLogout);
-  if (logoutLink) logoutLink.addEventListener('click', performLogout);
+        if (event) {
+            event.preventDefault();
+        }
+
+        localStorage.removeItem(
+            "isLoggedIn"
+        );
+
+        localStorage.removeItem(
+            "user"
+        );
+
+        window.location.href =
+            "index.html";
+    }
+
+    document.getElementById(
+        "logoutBtn"
+    ).addEventListener(
+        "click",
+        logout
+    );
+
+    document.getElementById(
+        "logoutLink"
+    ).addEventListener(
+        "click",
+        logout
+    );
+}
+
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value ?? "";
+
+    return div.innerHTML;
 }
